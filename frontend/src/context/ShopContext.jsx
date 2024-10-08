@@ -51,6 +51,36 @@ const getCartCount = () => {
   return totalCount;
 }
 
+const updateQty = async (itemId,size,quantity)=> {
+
+  let cartData = structuredClone(cartItem);
+
+  cartData[itemId][size] = quantity;
+
+  setCartItem(cartData);
+
+}
+
+const getCartAmount = () => {
+  let totalAmount = 0;
+  
+  for(const items in cartItem) {
+    let itemInfo = products.find((products) => products._id === items);
+    for(const item in cartItem[items]) {
+      try {
+        if(cartItem[items][item]) {
+          totalAmount += itemInfo.price * cartItem[items][item]
+        }
+        
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+  }
+  return totalAmount;
+}
+
 
   const value = {
     products,
@@ -63,6 +93,8 @@ const getCartCount = () => {
     cartItem, 
     addToCart,
     getCartCount,
+    updateQty,
+    getCartAmount,
   };
 
   return (
